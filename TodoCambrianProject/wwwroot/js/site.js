@@ -10,6 +10,18 @@
         }
     });
 }
+function markasdone(i) {
+    $.ajax({
+        url: 'Home/Mark',
+        type: 'POST',
+        data: {
+            id: i
+        },
+        success: function () {
+            window.location.reload();
+        }
+    });
+}
 
 function populateForm(i) {
 

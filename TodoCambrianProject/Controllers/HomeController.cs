@@ -55,6 +55,7 @@ namespace Todo.Controllers
                                     {
                                         Id = reader.GetInt32(0),
                                         Name = reader.GetString(1)
+                                       
                                     });
                             }
                         }
@@ -114,7 +115,7 @@ namespace Todo.Controllers
                 using (var tableCmd = con.CreateCommand())
                 {
                     con.Open();
-                    tableCmd.CommandText = $"INSERT INTO todo (name) VALUES ('{todo.Name}')";
+                    tableCmd.CommandText = $"INSERT INTO todo (name,status) VALUES ('{todo.Name}','{todo.Status}')";
                     try
                     {
                         tableCmd.ExecuteNonQuery();
@@ -138,6 +139,22 @@ namespace Todo.Controllers
                 {
                     con.Open();
                     tableCmd.CommandText = $"DELETE from todo WHERE Id = '{id}'";
+                    tableCmd.ExecuteNonQuery();
+                }
+            }
+
+            return Json(new { });
+        }
+        [HttpPost]
+        public JsonResult Mark(int id)
+        {
+            using (SqliteConnection con =
+                   new SqliteConnection("Data Source=db.sqlite"))
+            {
+                using (var tableCmd = con.CreateCommand())
+                {
+                    con.Open();
+                    tableCmd.CommandText = $"UPDATE todo SET name = 'Done' WHERE Id = '{id}'";
                     tableCmd.ExecuteNonQuery();
                 }
             }
