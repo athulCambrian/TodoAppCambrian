@@ -23,7 +23,7 @@ namespace Todo.Controllers
             var todoListViewModel = GetAllTodos();
             return View(todoListViewModel);
         }
-
+        //populate form is used to get all the lsit from the database in json format
         [HttpGet]
         public JsonResult PopulateForm(int id)
         {
@@ -31,7 +31,7 @@ namespace Todo.Controllers
             return Json(todo);
         }
 
-
+        //get all the todo from the database
         internal ToDoItemModel GetAllTodos()
         {
             List<TodoItem> todoList = new();
@@ -75,7 +75,7 @@ namespace Todo.Controllers
                 TodoList = todoList
             };
         }
-
+        // retreive individual todo using the id
         internal TodoItem GetById(int id)
         {
             TodoItem todo = new();
@@ -106,7 +106,7 @@ namespace Todo.Controllers
 
             return todo;
         }
-
+        //function used to insert a todo
         public RedirectResult Insert(TodoItem todo)
         {
             using (SqliteConnection con =
@@ -115,7 +115,7 @@ namespace Todo.Controllers
                 using (var tableCmd = con.CreateCommand())
                 {
                     con.Open();
-                    tableCmd.CommandText = $"INSERT INTO todo (name,status) VALUES ('{todo.Name}','{todo.Status}')";
+                    tableCmd.CommandText = $"INSERT INTO todo (name,status) VALUES ('{todo.Name}')";
                     try
                     {
                         tableCmd.ExecuteNonQuery();
@@ -128,7 +128,7 @@ namespace Todo.Controllers
             }
             return Redirect("https://localhost:5001/");
         }
-
+        //function used to delete
         [HttpPost]
         public JsonResult Delete(int id)
         {
@@ -145,6 +145,7 @@ namespace Todo.Controllers
 
             return Json(new { });
         }
+        //function used to mark a todo as completed
         [HttpPost]
         public JsonResult Mark(int id)
         {
@@ -161,7 +162,7 @@ namespace Todo.Controllers
 
             return Json(new { });
         }
-
+        //function used to update a name using id
         public RedirectResult Update(TodoItem todo)
         {
             using (SqliteConnection con =
